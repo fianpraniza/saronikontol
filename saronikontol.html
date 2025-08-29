@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi CCTV Stream</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      background-color: #e9e9e9; 
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .video-grid {
+      display: flex;
+      flex-wrap: wrap; /* Memastikan video akan turun ke bawah jika layar sempit */
+      gap: 20px;       /* Memberi jarak antar video */
+      justify-content: center;
+    }
+    .video-container {
+      flex: 1; /* Membuat setiap video memiliki lebar yang fleksibel */
+      min-width: 350px; /* Lebar minimum setiap video sebelum turun ke bawah */
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px;
+    }
+    .video-container h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    .video-player {
+      width: 100%;
+      background-color: #000;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+  <h1>Dashboard Multi-View CCTV</h1>
+
+  <div class="video-grid">
+    <div class="video-container">
+      <h2>Bendungan Hilir 3</h2>
+      <video id="video1" class="video-player" controls autoplay muted></video>
+    </div>
+
+    <div class="video-container">
+      <h2>Bendungan Hilir 2</h2>
+      <video id="video2" class="video-player" controls autoplay muted></video>
+    </div>
+
+    <div class="video-container">
+      <h2>Tol Dalam Kota</h2>
+      <video id="video3" class="video-player" controls autoplay muted></video>
+    </div>
+  </div>
+
+  <script>
+    // Fungsi untuk setup satu pemutar video HLS
+    function setupHlsPlayer(videoId, sourceUrl) {
+      var video = document.getElementById(videoId);
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(sourceUrl);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = sourceUrl;
+      }
+    }
+
+    // --- PENTING: GANTI 3 URL STREAM DI BAWAH INI ---
+    
+    setupHlsPlayer('video1', 'https://cctv.molecool.id/Bendungan-Hilir-006/video.m3u8?token=83bd7ae60a3f79c36ab3d7719281ca870c52c5e2-c1d9d3d0ca20e000026fbf97a1989a3e-1756437287-1756433687');
+    
+    setupHlsPlayer('video2', 'https://cctv.molecool.id/Bendungan-Hilir-001/video.m3u8?token=209cde5633b774091927132b26c8410a32ee0016-aed431b78586b8de3870335898841388-1756437194-1756433594');
+    
+    setupHlsPlayer('video3', 'https://cctv.molecool.id/Bendungan-Hilir-005/video.m3u8?token=90cfc0a779864ccd09056854007577eef7757289-424920077e167cd9571f1e026388c578-1756438633-1756435033');
+
+  </script>
+
+</body>
+</html>
